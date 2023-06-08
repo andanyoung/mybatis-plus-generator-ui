@@ -102,13 +102,13 @@ public class MbpGenerator {
         String serviceImplPkg = PathUtil.joinPackage(userConfig.getServiceImplInfo().getOutputPackage(), moduleName);
         String controllerPkg = PathUtil.joinPackage(userConfig.getControllerInfo().getOutputPackage(), moduleName);
         //子包名已经包含了完整路径
-        builder.parent("")
-                .moduleName("")
-                .entity(entityPkg)
-                .controller(controllerPkg)
-                .mapper(mapperPkg)
-                .service(servicePkg)
-                .serviceImpl(serviceImplPkg)
+        builder.parent( projectPathResolver.getBasePackage())
+                .moduleName(moduleName)
+                //.entity(entityPkg)
+                //.controller(controllerPkg)
+                //.mapper(mapperPkg)
+                //.service(servicePkg)
+                //.serviceImpl(serviceImplPkg)
                 .pathInfo(Collections.singletonMap(OutputFile.xml, mapperXmlOutputPath));
     }
 

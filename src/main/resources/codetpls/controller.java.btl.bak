@@ -1,7 +1,5 @@
 package ${package.Controller};
 
-import com.admin4j.framework.web.pojo.CommonPage;
-import com.admin4j.framework.web.pojo.R;
 import org.springframework.web.bind.annotation.*;
 <% if(!restControllerStyle){ %>
 import org.springframework.stereotype.Controller;
@@ -13,10 +11,10 @@ import ${superControllerClassPackage};
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 <% } %>
 <% if(isNotEmpty(controllerMethods.hasMethod)){  %>
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${table.entityName};
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 <% } %>
 
@@ -33,8 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 <% }else{ %>
 @Controller
 <% } %>
-@RequestMapping("<% if(isNotEmpty(controllerMappingHyphenStyle)){ %>${controllerMappingHyphen}<% }else{ %>${table.entityPath}<% } %>")
-@Api(tags = "${table.comment!}")
+@RequestMapping("<% if(isNotEmpty(package.ModuleName)){ %>/${package.ModuleName}<% } %>/<% if(isNotEmpty(controllerMappingHyphenStyle)){ %>${controllerMappingHyphen}<% }else{ %>${table.entityPath}<% } %>")
 <% if(kotlin){ %>
 class ${table.controllerName}<% if(isNotEmpty(superControllerClass)){ %> : ${superControllerClass}()<% } %>
 <% }else{ %>
@@ -54,9 +51,8 @@ public class ${table.controllerName} {
     <% } %>
 
     <% if(isNotEmpty(controllerMethods.list)){  %>
-    @GetMapping
-    @ApiOperation("分页查询")
-    public CommonPage<${table.entityName}> list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
+    @GetMapping(value = "/")
+    public ResponseEntity<Page<${table.entityName}>> list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
         if (current == null) {
             current = 1;
         }
@@ -64,42 +60,38 @@ public class ${table.controllerName} {
             pageSize = 10;
         }
         Page<${table.entityName}> aPage = ${serviceInstanceName}.page(new Page<>(current, pageSize));
-        return CommonPage.ok(aPage);
+        return new ResponseEntity<>(aPage, HttpStatus.OK);
     }
     <% } %>
 
     <% if(isNotEmpty(controllerMethods.getById)){ %>
     @GetMapping(value = "/{id}")
-    @ApiOperation("获取单行")
-    public R<${table.entityName}> getById(@PathVariable("id") String id) {
-        return R.ok(${serviceInstanceName}.getById(id));
+    public ResponseEntity<${table.entityName}> getById(@PathVariable("id") String id) {
+        return new ResponseEntity<>(${serviceInstanceName}.getById(id), HttpStatus.OK);
     }
     <% } %>
 
     <% if(isNotEmpty(controllerMethods.create)){ %>
-    @PutMapping
-    @ApiOperation("新增")
-    public R create(@RequestBody ${table.entityName} params) {
+    @PostMapping(value = "/create")
+    public ResponseEntity<Object> create(@RequestBody ${table.entityName} params) {
         ${serviceInstanceName}.save(params);
-        return R.okMsg("created successfully");
+        return new ResponseEntity<>("created successfully", HttpStatus.OK);
     }
     <% } %>
 
     <% if(isNotEmpty(controllerMethods.delete)){ %>
-    @DeleteMapping(value = "/{id}")
-    @ApiOperation("删除")
-    public R delete(@PathVariable("id") String id) {
+    @PostMapping(value = "/delete/{id}")
+    public ResponseEntity<Object> delete(@PathVariable("id") String id) {
         ${serviceInstanceName}.removeById(id);
-        return R.okMsg("deleted successfully");
+        return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
     }
     <% } %>
 
     <% if(isNotEmpty(controllerMethods.update)){ %>
-    @PostMapping
-    @ApiOperation("更新")
-    public R update(@RequestBody ${table.entityName} params) {
+    @PostMapping(value = "/update")
+    public ResponseEntity<Object> update(@RequestBody ${table.entityName} params) {
         ${serviceInstanceName}.updateById(params);
-        return R.okMsg("updated successfully");
+        return new ResponseEntity<>("updated successfully", HttpStatus.OK);
     }
     <% } %>
 }
