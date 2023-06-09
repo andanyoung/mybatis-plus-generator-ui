@@ -1,5 +1,6 @@
 package ${package.Controller};
 
+import com.admin4j.framework.web.factory.CommonPageMpFactory;
 import com.admin4j.framework.web.pojo.CommonPage;
 import com.admin4j.framework.web.pojo.R;
 import org.springframework.web.bind.annotation.*;
@@ -64,7 +65,7 @@ public class ${table.controllerName} {
             pageSize = 10;
         }
         Page<${table.entityName}> aPage = ${serviceInstanceName}.page(new Page<>(current, pageSize));
-        return CommonPage.ok(aPage);
+        return CommonPageMpFactory.ok(aPage);
     }
     <% } %>
 
