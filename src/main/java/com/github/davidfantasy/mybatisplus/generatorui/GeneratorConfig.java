@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.generator.config.ITypeConvert;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.github.davidfantasy.mybatisplus.generatorui.mbp.NameConverter;
 import com.github.davidfantasy.mybatisplus.generatorui.mbp.TemplateVaribleInjecter;
+import com.github.davidfantasy.mybatisplus.generatorui.strategy.ControllerStrategy;
 import com.github.davidfantasy.mybatisplus.generatorui.strategy.EntityStrategy;
 import lombok.Builder;
 import lombok.Data;
@@ -80,7 +81,8 @@ public class GeneratorConfig {
      */
     private IdType idType;
 
-    private  EntityStrategy entityStrategy;
+    private EntityStrategy entityStrategy;
+    private ControllerStrategy controllerStrategy;
 
     public NameConverter getAvailableNameConverter() {
         if (nameConverter == null) {

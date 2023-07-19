@@ -46,7 +46,7 @@ public class ${table.controllerName} {
     <% } %>
 
     <%
-       var serviceInstanceName = @cn.hutool.core.util.StrUtil.lowerFirst(table.serviceName);
+       var serviceInstanceName = @com.github.davidfantasy.mybatisplus.generatorui.StringUtils.serviceName(table.serviceName);
     %>
 
     <% if(isNotEmpty(controllerMethods.hasMethod)){  %>
@@ -78,7 +78,7 @@ public class ${table.controllerName} {
     <% } %>
 
     <% if(isNotEmpty(controllerMethods.create)){ %>
-    @PutMapping
+    @PostMapping
     @ApiOperation("新增")
     public R create(@RequestBody ${table.entityName} params) {
         ${serviceInstanceName}.save(params);
@@ -89,16 +89,16 @@ public class ${table.controllerName} {
     <% if(isNotEmpty(controllerMethods.delete)){ %>
     @DeleteMapping(value = "/{id}")
     @ApiOperation("删除")
-    public R delete(@PathVariable("id") String id) {
+    public R delete(@PathVariable("id") Long id) {
         ${serviceInstanceName}.removeById(id);
         return R.okMsg("deleted successfully");
     }
     <% } %>
 
     <% if(isNotEmpty(controllerMethods.update)){ %>
-    @PostMapping
+    @PutMapping(value = "/{id}")
     @ApiOperation("更新")
-    public R update(@RequestBody ${table.entityName} params) {
+    public R update(@PathVariable("id") Long id, @RequestBody ${table.entityName} params) {
         ${serviceInstanceName}.updateById(params);
         return R.okMsg("updated successfully");
     }

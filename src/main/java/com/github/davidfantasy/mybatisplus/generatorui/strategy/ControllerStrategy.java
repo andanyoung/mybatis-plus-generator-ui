@@ -16,7 +16,7 @@ public class ControllerStrategy {
      *      <code>@Controller</code> -> <code>@RestController</code>
      * </pre>
      */
-    private boolean restControllerStyle = false;
+    private boolean restControllerStyle = true;
 
     /**
      * 驼峰转连字符
