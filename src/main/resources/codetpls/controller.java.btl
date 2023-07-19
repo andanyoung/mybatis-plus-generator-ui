@@ -20,7 +20,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 <% } %>
-
+import java.io.Serializable;
 /**
  * <p>
  * ${table.comment!} 前端控制器
@@ -72,7 +72,7 @@ public class ${table.controllerName} {
     <% if(isNotEmpty(controllerMethods.getById)){ %>
     @GetMapping(value = "/{id}")
     @ApiOperation("获取单行")
-    public R<${table.entityName}> getById(@PathVariable("id") String id) {
+    public R<${table.entityName}> getById(@PathVariable("id") Serializable id) {
         return R.ok(${serviceInstanceName}.getById(id));
     }
     <% } %>
@@ -89,7 +89,7 @@ public class ${table.controllerName} {
     <% if(isNotEmpty(controllerMethods.delete)){ %>
     @DeleteMapping(value = "/{id}")
     @ApiOperation("删除")
-    public R delete(@PathVariable("id") Long id) {
+    public R delete(@PathVariable("id") Serializable id) {
         ${serviceInstanceName}.removeById(id);
         return R.okMsg("deleted successfully");
     }
@@ -98,7 +98,7 @@ public class ${table.controllerName} {
     <% if(isNotEmpty(controllerMethods.update)){ %>
     @PutMapping(value = "/{id}")
     @ApiOperation("更新")
-    public R update(@PathVariable("id") Long id, @RequestBody ${table.entityName} params) {
+    public R update(@PathVariable("id") Serializable id, @RequestBody ${table.entityName} params) {
         ${serviceInstanceName}.updateById(params);
         return R.okMsg("updated successfully");
     }
